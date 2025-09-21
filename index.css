@@ -74,7 +74,6 @@ body {
     display: inline-flex;
     align-items: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border: white;
 }
 
 .inline-btn:hover {
@@ -156,7 +155,7 @@ body {
 }
 
 .nav-link {
-    color: var(--text-white) !important;
+    color: var(--text-white);
     text-decoration: none;
     font-size: 16px;
     font-weight: 400;
@@ -313,9 +312,6 @@ body {
     padding: 0;
 }
 
-.nav-button:focus {
-    outline: none;
-}
 
 /* Individual positioning and unique styles */
 #left {
@@ -345,6 +341,7 @@ body {
 }
 
 /* Navigation button hover styles */
+.nav-button:focus,
 .nav-button:hover {
     background: var(--brand-color-light);
     cursor: pointer;

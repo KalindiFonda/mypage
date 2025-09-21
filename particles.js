@@ -38,13 +38,27 @@ class SimpleParticles {
             this.createParticle();
         }
 
-        // Handle window resize
-        window.addEventListener('resize', () => this.resize());
+        // Handle window resize with debouncing
+        this.resizeTimeout = null;
+        window.addEventListener('resize', () => this.debouncedResize());
     }
 
     resize() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
+    }
+
+    debouncedResize() {
+        // Clear any existing timeout
+        if (this.resizeTimeout) {
+            clearTimeout(this.resizeTimeout);
+        }
+
+        // Set a new timeout to call resize after 150ms of no resize events
+        this.resizeTimeout = setTimeout(() => {
+            this.resize();
+            this.resizeTimeout = null;
+        }, 150);
     }
 
     createParticle() {
@@ -136,4 +150,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Window resize is now handled in the SimpleParticles class

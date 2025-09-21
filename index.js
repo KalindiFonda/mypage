@@ -26,8 +26,6 @@ const SECTION_CONFIG = {
     }
 };
 
-const ANIMATION_DURATION = 800;
-
 // Update active navigation states
 function updateNavActiveStates(activeSectionName) {
     // Update all section navbars
@@ -118,6 +116,7 @@ document.addEventListener('click', (event) => {
     if (closeSectionName) {
         event.preventDefault();
         closeSection(closeSectionName);
+        history.pushState(null, null, window.location.pathname);
         return;
     }
 });
