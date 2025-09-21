@@ -300,7 +300,7 @@ body {
     text-align: center;
     font-size: 25px;
     background: transparent;
-    color: #fff;
+    color: var(--text-white);
     position: fixed;
     display: flex;
     flex-direction: column;
