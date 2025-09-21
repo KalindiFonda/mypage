@@ -24,6 +24,9 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    /* Support for mobile safe areas */
+    padding-top: env(safe-area-inset-top, 0);
+    padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
 /* Simple JS Particles */
@@ -236,30 +239,37 @@ body {
     display: none;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
-    max-width: 300px;
-    margin: 4vh auto 0 auto;
+    gap: 12px;
+    max-width: 280px;
+    margin: 1vh auto 0 auto;
+    /* Add bottom padding to account for mobile browser bars */
+    padding-bottom: max(20px, env(safe-area-inset-bottom, 20px));
+    /* Ensure navigation doesn't get cut off by browser UI */
+    margin-bottom: max(15px, env(safe-area-inset-bottom, 15px));
 }
 
 .mobile-nav-link {
     color: var(--text-white);
     text-decoration: none;
-    font-size: 17px;
-    padding: 8px 12px;
+    font-size: 18px;
+    padding: 6px 12px;
     flex: 1 1 45%;
-    min-width: 120px;
+    min-width: 110px;
     min-height: 44px;
     /* Apple's recommended minimum touch target */
     text-align: center;
     border: 2px solid var(--text-white);
-    border-radius: 25px;
+    border-radius: 22px;
     transition: var(--transition-standard);
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Ensure buttons are easily tappable */
+    touch-action: manipulation;
 }
 
-.mobile-nav-link:hover {
+.mobile-nav-link:hover,
+.mobile-nav-link:active {
     background: var(--text-white);
     color: var(--brand-color);
 }
@@ -549,11 +559,24 @@ body {
     #middle {
         width: 90vw;
         padding: 0 5vw;
+        /* Adjust height to account for mobile browser bars */
+        height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+        padding-bottom: max(15vh, env(safe-area-inset-bottom, 15vh));
+    }
+
+    /* Reduce spacing between header elements on mobile */
+    #middle header h1 {
+        margin: 1.5rem 0 0 0;
+    }
+
+    #middle header h2 {
+        margin: 2rem 0 0 0;
     }
 
     .social-links {
         width: 80%;
         gap: 12px;
+        margin: 2rem auto 1.5rem auto;
     }
 
     .container form input {
@@ -568,5 +591,42 @@ body {
     .container {
         width: 95vw;
         padding: 2.5vh 2.5vw;
+        /* Account for mobile browser bars */
+        max-height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    }
+}
+
+/* Additional mobile-specific improvements for smaller screens */
+@media (max-width: 480px) {
+    .mobile-nav {
+        max-width: 260px;
+        gap: 10px;
+        margin: 0.5vh auto 0 auto;
+        padding-bottom: max(25px, env(safe-area-inset-bottom, 25px));
+        margin-bottom: max(20px, env(safe-area-inset-bottom, 20px));
+    }
+
+    .mobile-nav-link {
+        font-size: 15px;
+        padding: 8px 12px;
+        min-width: 100px;
+        border-radius: 20px;
+    }
+
+    /* Even tighter spacing for smaller screens */
+    #middle header h1 {
+        margin: 1rem 0 0 0;
+    }
+
+    #middle header h2 {
+        margin: 1.5rem 0 0 0;
+    }
+
+    .social-links {
+        margin: 1.5rem auto 1rem auto;
+    }
+
+    #middle {
+        padding-bottom: max(20vh, env(safe-area-inset-bottom, 20vh));
     }
 }
