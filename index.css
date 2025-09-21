@@ -6,23 +6,24 @@
     --brand-color-hover: rgba(216, 0, 0, 0.8);
     --brand-color-light: rgba(255, 50, 50, 0.9);
     --text-white: #fff;
+    --text-light-blue: #87ceeb;
     --transition-standard: 0.4s ease-in-out;
+    --font-family: 'Josefin Sans', sans-serif;
+}
+
+/* Global font family - applied once */
+* {
+    font-family: var(--font-family);
 }
 
 body {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("sunset.jpg") center center;
     background-size: cover;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    font-family: 'Josefin Sans', sans-serif;
-}
-
-/* Ensure Josefin Sans is used everywhere */
-* {
-    font-family: 'Josefin Sans', sans-serif;
 }
 
 /* Simple JS Particles */
@@ -87,6 +88,100 @@ body {
     margin-right: 8px;
 }
 
+/* Contact section specific - white buttons as requested */
+#top_container .inline-btn {
+    background: var(--text-white);
+    color: var(--brand-color);
+}
+
+#top_container .inline-btn:hover {
+    background: var(--brand-color);
+    color: var(--text-white);
+}
+
+/* Content styling */
+.container section {
+    margin: 4vh 0;
+    max-width: 700px;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.container p {
+    font-size: 17px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.topic {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-white);
+}
+
+.topic i {
+    color: var(--text-white);
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
+}
+
+/* Content links styling - back to light blue */
+.container section a,
+.container sup a {
+    color: var(--text-light-blue);
+    text-decoration: none;
+    transition: var(--transition-standard);
+}
+
+.container section a:hover,
+.container sup a:hover {
+    color: var(--text-white);
+    text-decoration: underline;
+}
+
+/* Section header with close button and navbar */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.section-navbar {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    color: var(--text-white) !important;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    transition: var(--transition-standard);
+    padding: 4px 0;
+    border-bottom: 2px solid transparent;
+}
+
+/* Fixed: Remove double line effect - use only border-bottom */
+.nav-link:hover,
+.nav-link.active {
+    border-bottom-color: var(--text-white);
+}
+
+/* Hide section navbar on mobile */
+@media (max-width: 800px) {
+    .section-navbar {
+        display: none;
+    }
+
+    .section-header {
+        justify-content: flex-start;
+    }
+}
+
 
 
 #loading {
@@ -137,26 +232,40 @@ body {
 
 
 
-#menu {
-    width: 100%;
-    text-align: center;
-    margin: 6vh 0px;
+/* Mobile navigation - hidden on desktop */
+.mobile-nav {
     display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    max-width: 300px;
+    margin: 4vh auto 0 auto;
 }
 
-#menu a {
-    margin: 0px 6%;
-    font-size: 19px;
-    color: #fff;
-    text-decoration: underline;
+.mobile-nav-link {
+    color: var(--text-white);
+    text-decoration: none;
+    font-size: 17px;
+    padding: 8px 12px;
+    flex: 1 1 45%;
+    min-width: 120px;
+    min-height: 44px;
+    /* Apple's recommended minimum touch target */
+    text-align: center;
+    border: 2px solid var(--text-white);
+    border-radius: 25px;
+    transition: var(--transition-standard);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#bottom_container a {
-    margin: 0px 6%;
-    font-size: 19px;
-    color: #fff;
-    text-decoration: underline;
+.mobile-nav-link:hover {
+    background: var(--text-white);
+    color: var(--brand-color);
 }
+
+/* Remove this rule - it was causing text alignment issues in about section */
 
 #middle {
     width: 100vw;
@@ -168,7 +277,7 @@ body {
     top: 0;
     text-align: center;
     z-index: 1;
-    color: #fff;
+    color: var(--text-white);
     padding-bottom: 10vh;
 }
 
@@ -258,11 +367,11 @@ body {
 }
 
 .social {
-    color: #fff;
+    color: var(--text-white);
     font-size: 22px;
     border-radius: 50%;
     transition: var(--transition-standard);
-    margin: 0px 8px;
+    margin: 0 8px;
     text-align: center;
 }
 
@@ -282,6 +391,8 @@ body {
     max-height: 100vh;
     overflow-y: auto;
     display: none;
+    text-align: left;
+    /* Ensure all container content is left-aligned */
 }
 
 /* Close buttons */
@@ -302,10 +413,6 @@ body {
     background: rgba(255, 255, 255, 0.1);
     outline: 2px solid var(--text-white);
     outline-offset: 2px;
-}
-
-.container section {
-    margin: 8vh 0px;
 }
 
 /* Contact links styling */
@@ -342,42 +449,7 @@ body {
     text-decoration: underline;
 }
 
-.container p {
-    font-size: 21px;
-}
-
-/* Base button styles */
-.btn-base {
-    font-size: 18px;
-    font-family: 'Josefin Sans', sans-serif;
-    border: 3px solid #fff;
-    padding: 8px 40px;
-    border-radius: 80px;
-    font-weight: bold;
-    margin: 2vh 10px;
-    transition: var(--transition-standard);
-    cursor: pointer;
-}
-
-/* Button variants */
-.btn_one {
-    color: #fff;
-    background: transparent;
-}
-
-.btn_one:hover {
-    color: var(--brand-color);
-    background: var(--text-white);
-}
-
-.btn_two {
-    color: var(--brand-color);
-    background: var(--text-white);
-}
-
-.btn_two:hover {
-    padding: 8px 60px;
-}
+/* Removed unused button styles (.btn-base, .btn_one, .btn_two) - not used in HTML */
 
 .container form input {
     width: 46%;
@@ -417,11 +489,11 @@ body {
 }
 
 ::placeholder {
-    color: #fff;
+    color: var(--text-white);
 }
 
 #footer {
-    color: #fff;
+    color: var(--text-white);
     width: 92vw;
     padding: 5vh 4vw;
     text-align: right;
@@ -459,20 +531,18 @@ body {
 }
 
 @media (max-width: 800px) {
-    #left {
-        display: none;
-    }
 
-    #bottom {
-        display: none;
-    }
-
-    #right {
-        display: none;
-    }
-
+    /* Hide desktop navigation buttons */
+    #left,
+    #bottom,
+    #right,
     #top {
         display: none;
+    }
+
+    /* Show mobile navigation */
+    .mobile-nav {
+        display: flex;
     }
 
     #footer {
@@ -481,7 +551,7 @@ body {
 
     #middle {
         width: 90vw;
-        padding: 0px 5vw;
+        padding: 0 5vw;
     }
 
     .social-links {
@@ -497,9 +567,9 @@ body {
         width: 90%;
     }
 
-    #menu {
-        display: inline-block;
+    /* Ensure containers are visible on mobile */
+    .container {
+        width: 95vw;
+        padding: 2.5vh 2.5vw;
     }
-
-
 }

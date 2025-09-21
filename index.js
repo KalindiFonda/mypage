@@ -3,77 +3,68 @@ const SECTION_CONFIG = {
     left: {
         container: '#left_container',
         showAnimation: 'slideInLeft',
-        hideAnimation: 'slideOutLeft'
+        hideAnimation: 'slideOutLeft',
+        anchor: '#offers'
     },
     right: {
         container: '#right_container',
         showAnimation: 'slideInRight',
-        hideAnimation: 'slideOutRight'
+        hideAnimation: 'slideOutRight',
+        anchor: '#asks'
     },
     bottom: {
         container: '#bottom_container',
         showAnimation: 'slideInUp',
-        hideAnimation: 'slideOutDown'
+        hideAnimation: 'slideOutDown',
+        anchor: '#about'
     },
     top: {
         container: '#top_container',
         showAnimation: 'slideInDown',
-        hideAnimation: 'slideOutUp'
+        hideAnimation: 'slideOutUp',
+        anchor: '#contact'
     }
 };
 
 const ANIMATION_DURATION = 800;
 
-// Animation state management to prevent conflicts
-const animationState = {
-    activeAnimations: new Set(),
-
-    isAnimating(sectionName) {
-        return this.activeAnimations.has(sectionName);
-    },
-
-    startAnimation(sectionName) {
-        this.activeAnimations.add(sectionName);
-    },
-
-    endAnimation(sectionName) {
-        this.activeAnimations.delete(sectionName);
-    }
-};
+// Update active navigation states
+function updateNavActiveStates(activeSectionName) {
+    // Update all section navbars
+    document.querySelectorAll('.section-navbar .nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.dataset.section === activeSectionName) {
+            link.classList.add('active');
+        }
+    });
+}
 
 // Generic function to show any section
 function showSection(sectionName) {
     const config = SECTION_CONFIG[sectionName];
-    if (!config) {
-        console.error(`Section "${sectionName}" not found in configuration`);
-        return;
-    }
-
-    // Prevent multiple animations on same section
-    if (animationState.isAnimating(sectionName)) {
-        return;
-    }
+    if (!config) return;
 
     const container = document.querySelector(config.container);
-    if (!container) {
-        console.error(`Container "${config.container}" not found in DOM`);
-        return;
+    if (!container) return;
+
+    // Update active navigation states
+    updateNavActiveStates(sectionName);
+
+    // Update URL with anchor
+    if (config.anchor) {
+        history.pushState(null, null, config.anchor);
     }
 
-    // Mark as animating
-    animationState.startAnimation(sectionName);
-
     // Show container
-    container.style.display = "inherit";
+    container.style.display = "block";
 
     // Add animation classes
     container.classList.add("animated", config.showAnimation);
 
-    // Remove animation classes when animation ends (no jerk!)
+    // Remove animation classes when animation ends
     const handleAnimationEnd = () => {
         container.classList.remove("animated", config.showAnimation);
         container.removeEventListener('animationend', handleAnimationEnd);
-        animationState.endAnimation(sectionName);
     };
 
     container.addEventListener('animationend', handleAnimationEnd);
@@ -82,24 +73,10 @@ function showSection(sectionName) {
 // Generic function to close any section
 function closeSection(sectionName) {
     const config = SECTION_CONFIG[sectionName];
-    if (!config) {
-        console.error(`Section "${sectionName}" not found in configuration`);
-        return;
-    }
-
-    // Prevent multiple animations on same section
-    if (animationState.isAnimating(sectionName)) {
-        return;
-    }
+    if (!config) return;
 
     const container = document.querySelector(config.container);
-    if (!container) {
-        console.error(`Container "${config.container}" not found in DOM`);
-        return;
-    }
-
-    // Mark as animating
-    animationState.startAnimation(sectionName);
+    if (!container) return;
 
     // Add animation classes
     container.classList.add("animated", config.hideAnimation);
@@ -109,7 +86,6 @@ function closeSection(sectionName) {
         container.classList.remove("animated", config.hideAnimation);
         container.style.display = "none";
         container.removeEventListener('animationend', handleAnimationEnd);
-        animationState.endAnimation(sectionName);
     };
 
     container.addEventListener('animationend', handleAnimationEnd);
@@ -118,10 +94,22 @@ function closeSection(sectionName) {
 // Event delegation for data attributes
 document.addEventListener('click', (event) => {
     // Handle navigation button clicks (show sections)
-    const sectionName = event.target.dataset.section;
+    const clickedElement = event.target.closest('[data-section]');
+    const sectionName = clickedElement ? clickedElement.dataset.section : null;
+
     if (sectionName) {
         event.preventDefault();
-        showSection(sectionName);
+
+        if (sectionName === 'home') {
+            // Handle home - hide all sections and update URL
+            hideAllSections();
+            updateNavActiveStates('home');
+            history.pushState(null, null, '/');
+        } else {
+            // Close all other sections first, then show the new one
+            hideAllSections();
+            showSection(sectionName);
+        }
         return;
     }
 
@@ -133,6 +121,69 @@ document.addEventListener('click', (event) => {
         return;
     }
 });
+
+// Handle URL anchors - find section by anchor
+function getSectionByAnchor(anchor) {
+    for (const [sectionName, config] of Object.entries(SECTION_CONFIG)) {
+        if (config.anchor === anchor) {
+            return sectionName;
+        }
+    }
+    return null;
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function () {
+    // Reset all containers on page load
+    Object.keys(SECTION_CONFIG).forEach(sectionName => {
+        const config = SECTION_CONFIG[sectionName];
+        const container = document.querySelector(config.container);
+
+        if (container) {
+            container.style.display = 'none';
+            container.classList.remove('animated', config.showAnimation, config.hideAnimation);
+        }
+    });
+
+    // Check if there's an anchor in the URL and open the corresponding section
+    const currentHash = window.location.hash;
+    if (currentHash) {
+        const sectionName = getSectionByAnchor(currentHash);
+        if (sectionName) {
+            // Small delay to ensure DOM is fully ready
+            setTimeout(() => {
+                showSection(sectionName);
+            }, 100);
+        }
+    }
+});
+
+// Handle browser back/forward navigation and hash changes
+window.addEventListener('hashchange', function () {
+    const currentHash = window.location.hash;
+    if (currentHash) {
+        const sectionName = getSectionByAnchor(currentHash);
+        if (sectionName) {
+            hideAllSections();
+            showSection(sectionName);
+        }
+    } else {
+        // No hash means home
+        hideAllSections();
+        updateNavActiveStates('home');
+    }
+});
+
+// Function to hide all sections (for home)
+function hideAllSections() {
+    Object.keys(SECTION_CONFIG).forEach(sectionName => {
+        const config = SECTION_CONFIG[sectionName];
+        const container = document.querySelector(config.container);
+        if (container && container.style.display !== 'none') {
+            closeSection(sectionName);
+        }
+    });
+}
 
 
 // Optimized loading sequence without jQuery
