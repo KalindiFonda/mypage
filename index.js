@@ -1,17 +1,17 @@
 // Animation configuration for each section
 const SECTION_CONFIG = {
     left: {
-        container: '#about_container',
+        container: '#left_container',
         showAnimation: 'slideInLeft',
         hideAnimation: 'slideOutLeft'
     },
     right: {
-        container: '#work_container',
+        container: '#right_container',
         showAnimation: 'slideInRight',
         hideAnimation: 'slideOutRight'
     },
     bottom: {
-        container: '#contact_container',
+        container: '#bottom_container',
         showAnimation: 'slideInUp',
         hideAnimation: 'slideOutDown'
     },
@@ -139,9 +139,9 @@ document.addEventListener('click', (event) => {
 setTimeout(function () {
     const loading = document.getElementById("loading");
     const box = document.getElementById("box");
-    const about = document.getElementById("about");
-    const contact = document.getElementById("contact");
-    const work = document.getElementById("work");
+    const left = document.getElementById("left");
+    const bottom = document.getElementById("bottom");
+    const right = document.getElementById("right");
     const top = document.getElementById("top");
 
     if (loading) {
@@ -156,7 +156,7 @@ setTimeout(function () {
             if (box) box.style.display = "none";
 
             // Clean up navigation button animations
-            [about, contact, work, top].forEach(element => {
+            [left, bottom, right, top].forEach(element => {
                 if (element) {
                     element.classList.remove("animated", "fadeIn");
                 }

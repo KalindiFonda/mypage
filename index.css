@@ -52,6 +52,41 @@ body {
     top: 6px;
 }
 
+/* Inline contact buttons */
+.inline-contact-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.inline-btn {
+    background: var(--brand-color);
+    color: var(--text-white);
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: var(--transition-standard);
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: white;
+}
+
+.inline-btn:hover {
+    background: var(--text-white);
+    color: var(--brand-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.inline-btn i {
+    margin-right: 8px;
+}
+
 
 
 #loading {
@@ -94,20 +129,13 @@ body {
     top: 0;
 }
 
-#box div {
-    width: 16.66vw;
-    height: 100%;
-    display: inline-block;
-}
-
-.box1 {
+.loading-overlay {
+    width: 100vw;
+    height: 100vh;
     background: var(--brand-color);
 }
 
-.box2 {
-    background: var(--brand-color);
-    margin-left: -5px;
-}
+
 
 #menu {
     width: 100%;
@@ -123,7 +151,7 @@ body {
     text-decoration: underline;
 }
 
-#contact_container a {
+#bottom_container a {
     margin: 0px 6%;
     font-size: 19px;
     color: #fff;
@@ -181,21 +209,21 @@ body {
 }
 
 /* Individual positioning and unique styles */
-#about {
+#left {
     transform: rotate(-90deg);
     left: 0;
     bottom: 40vh;
     border-radius: 0px 0px 100px 100px;
 }
 
-#work {
+#right {
     transform: rotate(90deg);
     right: 0;
     bottom: 40vh;
     border-radius: 0px 0px 100px 100px;
 }
 
-#contact {
+#bottom {
     bottom: 0;
     left: 45vw;
     border-radius: 100px 100px 0px 0px;
@@ -283,9 +311,11 @@ body {
 /* Contact links styling */
 .contact-links {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 20px;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .contact-link {
@@ -429,15 +459,15 @@ body {
 }
 
 @media (max-width: 800px) {
-    #about {
+    #left {
         display: none;
     }
 
-    #contact {
+    #bottom {
         display: none;
     }
 
-    #work {
+    #right {
         display: none;
     }
 
@@ -471,15 +501,5 @@ body {
         display: inline-block;
     }
 
-    .onlywide {
-        display: none !important;
-    }
 
-    .box2 {
-        margin-left: 0px !important;
-    }
-
-    #box div {
-        width: 100%;
-    }
 }
